@@ -19,6 +19,7 @@ window.SuprimentosApi={
    catch(e){if(e.name==='AbortError')throw e;if(!canRetry||attempt)throw new SuprimentosApiError('Não foi possível conectar ao serviço. Tente atualizar novamente.');}
    await new Promise((resolve,reject)=>{if(signal?.aborted){reject(new DOMException('Consulta cancelada','AbortError'));return;}const abort=()=>{clearTimeout(timer);reject(new DOMException('Consulta cancelada','AbortError'));};const timer=setTimeout(()=>{signal?.removeEventListener('abort',abort);resolve();},600);signal?.addEventListener('abort',abort,{once:true});});
   }
+  if(response.status===403){let denied;try{denied=await response.json();}catch(_){}throw new SuprimentosApiError(typeof denied?.detail==='string'?denied.detail:'Sua sessão não tem acesso a esta consulta.',403);}
   if(!response.ok)throw new SuprimentosApiError(({401:'Sua sessão expirou. Entre novamente pela CENTRAL.',403:'Sua sessão não tem acesso a esta consulta.',404:'Esta consulta ainda não está disponível no serviço publicado.',422:'Confira as datas e os filtros selecionados.',500:'Não foi possível concluir a consulta.',502:'O serviço de dados está indisponível.',503:'O serviço de dados está temporariamente indisponível.'})[response.status]||'Não foi possível concluir a consulta.',response.status);
   let data;try{data=await response.json();}catch(_){throw new SuprimentosApiError('O serviço retornou uma resposta inválida.');}
   if(data?.ok!==true)throw new SuprimentosApiError('Resposta incompatível com o Suprimentos.');return data;
