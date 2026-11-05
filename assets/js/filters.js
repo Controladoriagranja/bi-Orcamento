@@ -2,7 +2,7 @@
 window.BudgetFilters=(()=>{
  const controls=new Map();
  function enhance(select){
-  const options=[...select.options].filter(o=>o.value),state=new Set(select.value?[select.value]:options.map(o=>o.value));
+  let options=[...select.options].filter(o=>o.value);const state=new Set(select.value?[select.value]:options.map(o=>o.value));
   const wrap=document.createElement('div');wrap.className='budget-select';
   const button=document.createElement('button');button.type='button';button.className='budget-select-trigger';button.setAttribute('aria-expanded','false');button.disabled=select.disabled;
   const panel=document.createElement('div');panel.className='budget-select-panel';panel.hidden=true;
@@ -14,7 +14,7 @@ window.BudgetFilters=(()=>{
   function apply(){if(select.disabled)return;select.value=state.size===1?[...state][0]:'';refresh();select.dispatchEvent(new Event('change',{bubbles:true}));}
   button.onclick=()=>{if(select.disabled)return;panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)search.focus();};search.oninput=refresh;all.onchange=()=>{state.clear();if(all.checked)options.forEach(o=>state.add(o.value));apply();};
   document.addEventListener('click',e=>{if(!wrap.contains(e.target)){panel.hidden=true;button.setAttribute('aria-expanded','false');}});wrap.addEventListener('keydown',e=>{if(e.key==='Escape'){panel.hidden=true;button.setAttribute('aria-expanded','false');button.focus();}});
-  controls.set(select.id,{values:()=>[...state],set:values=>{if(select.disabled)return;state.clear();values.forEach(v=>state.add(v));select.value=values.length===1?values[0]:'';refresh();}});refresh();
+  controls.set(select.id,{replaceOptions:rows=>{if(select.disabled)return;options=rows.map(r=>new Option(r.label,r.value));select.replaceChildren(new Option('Todos',''),...options);state.clear();options.forEach(o=>state.add(o.value));select.value='';refresh();},values:()=>[...state],set:values=>{if(select.disabled)return;state.clear();values.forEach(v=>state.add(v));select.value=values.length===1?values[0]:'';refresh();}});refresh();
  }
- return {init:()=>document.querySelectorAll('.com-filter-grid select').forEach(enhance),values:id=>controls.get(id)?.values()??[],set:(id,values)=>controls.get(id)?.set(values)};
+ return {init:()=>document.querySelectorAll('.com-filter-grid select').forEach(select=>{if(!select.closest('label')?.hidden)enhance(select);}),values:id=>controls.get(id)?.values()??[],set:(id,values)=>controls.get(id)?.set(values),replaceOptions:(id,rows)=>controls.get(id)?.replaceOptions(rows)};
 })();
