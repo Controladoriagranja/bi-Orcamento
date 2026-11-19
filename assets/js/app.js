@@ -30,15 +30,16 @@
   $('estado').textContent=d.referencia?'Referência: '+date(d.referencia)+' · '+d.quantidade_areas+' áreas · Plano auxiliar 853':'Sem valores para os filtros selecionados.';
   $('sinteticoDescricao').textContent='Clique nas contas para abrir os níveis vinculados. Plano atualizado em '+(d.plano_atualizado_em?new Date(d.plano_atualizado_em).toLocaleString('pt-BR'):'—')+(d.contas_sem_parametro?.length?' · '+d.contas_sem_parametro.length+' conta(s) do orçamento sem vínculo no plano.':'');
   const nodes=new Map(d.contas.map(r=>[r.conta,r])),children=new Map();for(const r of d.contas){if(!children.has(r.superior))children.set(r.superior,[]);children.get(r.superior).push(r);}
-  const headers=[['identidade','Conta / Descrição'],['planejado','Planejado mensal'],['realizado','Realizado'],['previsto_proporcional','Previsto proporcional'],['diferenca','Diferença'],['percentual','Realizado / Proporção'],['situacao','Situação']],sort=tableSort.sintetico;
+  const headers=[['identidade','Conta / Descrição'],['planejado','Orçamento mensal'],['realizado','Realizado'],['previsto_proporcional','Previsto até a referência'],['diferenca','Diferença'],['percentual','Execução (%)'],['situacao','Situação']],sort=tableSort.sintetico;
   const head=headers.map(([key,label])=>'<th aria-sort="'+(sort.key===key?(sort.direction==='desc'?'descending':'ascending'):'none')+'"><button type="button" class="budget-sort" data-budget-sort="'+key+'">'+label+' '+(sort.key===key?(sort.direction==='desc'?'↓':'↑'):'↕')+'</button></th>').join('');
-  function accountTable(rows,level){
-   return '<table class="budget-table synthetic-table" data-sort-scope="sintetico" data-level="'+level+'" style="--header-top:'+level*60+'px"><thead><tr>'+head+'</tr></thead><tbody>'+ordered(rows,sort,true).map((r,i)=>{
-    const opened=r.tem_filhos&&expandedAccounts.has(r.conta);
-    return '<tr class="synthetic-account-row'+(i%2?' row-alt':'')+'"><td>'+(r.tem_filhos?'<button type="button" class="synthetic-account" data-account="'+esc(r.conta)+'" aria-expanded="'+opened+'"><span aria-hidden="true">'+(opened?'▾':'▸')+'</span>'+esc(r.conta+' · '+r.descricao)+'</button>':esc(r.conta+' · '+r.descricao))+'</td><td>'+money(r.planejado)+'</td><td>'+money(r.realizado)+'</td><td>'+money(r.previsto_proporcional)+'</td><td>'+money(r.diferenca)+'</td><td>'+pct(r.percentual)+'</td><td><span class="situacao '+esc(r.cor)+'">'+esc(r.situacao)+'</span></td></tr>'+(opened?'<tr class="synthetic-detail"><td colspan="7">'+accountTable(children.get(r.conta)||[],level+1)+'</td></tr>':'');
-   }).join('')+'</tbody></table>';
-  }
-  $('sintetico').innerHTML=d.raizes.length?accountTable(d.raizes.map(code=>nodes.get(code)).filter(Boolean),0):'<p>Nenhuma conta disponível para os filtros selecionados.</p>';
+  const visible=[];
+  function visit(rows,level){for(const r of ordered(rows,sort,true)){visible.push({...r,level});if(r.tem_filhos&&expandedAccounts.has(r.conta))visit(children.get(r.conta)||[],level+1);}}
+  visit(d.raizes.map(code=>nodes.get(code)).filter(Boolean),0);
+  $('sintetico').innerHTML=visible.length?'<table class="budget-table synthetic-table" data-sort-scope="sintetico"><thead><tr>'+head+'</tr></thead><tbody>'+visible.map(r=>{
+   const opened=r.tem_filhos&&expandedAccounts.has(r.conta),parent=nodes.get(r.superior);
+   const label='<span class="synthetic-code">'+esc(r.conta)+'</span><span class="synthetic-name">'+esc(r.descricao)+'</span>';
+   return '<tr class="synthetic-account-row '+(r.level===0?'synthetic-principal':'synthetic-child')+(opened?' synthetic-open':'')+'" data-level="'+r.level+'"><td style="--level:'+r.level+'"'+(parent?' title="Detalhamento de '+esc(parent.conta+' · '+parent.descricao)+'"':'')+'>'+(r.tem_filhos?'<button type="button" class="synthetic-account" data-account="'+esc(r.conta)+'" aria-expanded="'+opened+'"><span class="synthetic-arrow" aria-hidden="true">'+(opened?'▾':'▸')+'</span>'+label+'</button>':'<span class="synthetic-leaf"><span class="synthetic-arrow" aria-hidden="true"></span>'+label+'</span>')+'</td><td>'+money(r.planejado)+'</td><td>'+money(r.realizado)+'</td><td>'+money(r.previsto_proporcional)+'</td><td>'+money(r.diferenca)+'</td><td>'+pct(r.percentual)+'</td><td><span class="situacao '+esc(r.cor)+'">'+esc(r.situacao)+'</span></td></tr>';
+  }).join('')+'</tbody></table>':'<p>Nenhuma conta disponível para os filtros selecionados.</p>';
  }
  $('sintetico').onclick=e=>{const button=e.target.closest('[data-account]');if(!button)return;const code=button.dataset.account;expandedAccounts.has(code)?expandedAccounts.delete(code):expandedAccounts.add(code);render(last);$('sintetico').querySelector('[data-account="'+code+'"]')?.focus({preventScroll:true});};
  $('formulaSintetico').onclick=()=>formulaDialog.showModal();

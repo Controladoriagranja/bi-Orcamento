@@ -28,3 +28,22 @@ body[data-page="areas"] #visaoSintetica #sintetico .synthetic-detail>td{position
  #visaoSintetica #sintetico{height:65dvh;min-height:360px}
  #visaoSintetica #sintetico .budget-table{min-width:920px;font-size:11px}
 }
+
+/* Uma unica grade para manter a leitura de totais e detalhes alinhada. */
+#visaoSintetica .synthetic-reading-note{font-size:11px;line-height:1.5;margin:0 0 12px;padding:9px 12px;background:var(--muted);border-radius:6px;color:var(--muted-foreground)}
+#visaoSintetica #sintetico .budget-table th:first-child,#visaoSintetica #sintetico .budget-table td:first-child{width:31%}
+body[data-page="areas"] #visaoSintetica #sintetico .budget-table th{height:54px;top:0}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-account-row>td{height:44px;text-align:right;font-variant-numeric:tabular-nums;background:var(--card)}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-principal>td{height:56px;border-top:1px solid var(--border);background:var(--muted)}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-child>td{background:var(--card);color:var(--foreground)}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-account-row>td:first-child{text-align:left;padding-left:calc(10px + var(--level)*24px)}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-account-row>td:nth-last-child(-n+2){text-align:center}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-account{justify-content:flex-start;text-align:left;width:100%;font-weight:500!important;gap:8px}
+#visaoSintetica #sintetico .synthetic-leaf{display:flex;align-items:center;gap:8px;padding:4px}
+#visaoSintetica #sintetico .synthetic-principal .synthetic-name{font-weight:700}
+#visaoSintetica #sintetico .synthetic-open .synthetic-arrow{color:var(--primary)}
+#visaoSintetica #sintetico .synthetic-arrow{width:12px;flex:0 0 12px}
+#visaoSintetica #sintetico .synthetic-code{flex:0 0 auto;color:var(--muted-foreground);font-size:11px;font-variant-numeric:tabular-nums}
+#visaoSintetica #sintetico .synthetic-name{overflow-wrap:anywhere}
+#visaoSintetica #sintetico .budget-table th:first-child .budget-sort{text-align:left}
+@media(max-width:767px){#visaoSintetica #sintetico .budget-table{min-width:1080px}}
