@@ -47,3 +47,6 @@ body[data-page="areas"] #visaoSintetica #sintetico .synthetic-account{justify-co
 #visaoSintetica #sintetico .synthetic-name{overflow-wrap:anywhere}
 #visaoSintetica #sintetico .budget-table th:first-child .budget-sort{text-align:left}
 @media(max-width:767px){#visaoSintetica #sintetico .budget-table{min-width:1080px}}
+
+#visaoSintetica #sintetico .synthetic-context>td{color:var(--muted-foreground)!important}
+#visaoSintetica #sintetico .synthetic-context .situacao{background:var(--muted);color:var(--muted-foreground)}
