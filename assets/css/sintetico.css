@@ -1,0 +1,30 @@
+/* Mesmo padrao de leitura e expansao da Aderencia ao Plano. */
+body[data-page="areas"] #visaoSintetica{padding:14px;min-width:0}
+body[data-page="areas"] #visaoSintetica>header{display:block;position:relative;min-height:60px;margin-bottom:4px}
+body[data-page="areas"] #visaoSintetica>header>div:first-child{display:block;width:100%}
+#visaoSintetica>header h2{text-align:center;font-size:14px;font-weight:600;margin:2px 190px 10px;color:var(--primary)}
+body[data-page="areas"] #visaoSintetica>header p{text-align:left;font-size:11px;line-height:1.5;margin:0;padding-right:190px;color:var(--muted-foreground)}
+#visaoSintetica>header .budget-panel-actions{position:absolute;right:0;top:0;gap:8px}
+#visaoSintetica #sintetico{height:calc(100dvh - 300px);min-height:360px;max-height:none;overflow:auto;position:relative;overscroll-behavior:contain}
+#visaoSintetica #sintetico .budget-table{width:100%;table-layout:fixed;min-width:100%;border-collapse:separate;border-spacing:0;font-size:12px;line-height:1.25;color:var(--foreground)}
+body[data-page="areas"] #visaoSintetica #sintetico .budget-table th,body[data-page="areas"] #visaoSintetica #sintetico .budget-table td{text-align:center;padding:9px 8px;white-space:normal;overflow-wrap:anywhere;font-weight:400;border-top:0;border-bottom:1px solid var(--border);box-sizing:border-box}
+#visaoSintetica #sintetico .budget-table th:first-child,#visaoSintetica #sintetico .budget-table td:first-child{width:25%}
+body[data-page="areas"] #visaoSintetica #sintetico .budget-table th{height:60px;position:sticky;top:var(--header-top,0px);z-index:5;background:var(--card);border-bottom:2px solid var(--primary);font-weight:600}
+#visaoSintetica #sintetico .budget-table th:first-child{left:0;z-index:7}
+#visaoSintetica #sintetico .synthetic-account-row>td{height:60px;background:var(--card)}
+#visaoSintetica #sintetico .synthetic-account-row.row-alt>td{background:var(--muted)}
+#visaoSintetica #sintetico .synthetic-account-row>td:first-child{position:sticky;left:0;z-index:2;padding-left:8px}
+body[data-page="areas"] #visaoSintetica #sintetico .budget-table button{color:inherit;font:inherit;line-height:1.25;text-align:center;background:transparent;border:0;text-decoration:none;cursor:pointer;padding:4px;min-height:0}
+#visaoSintetica #sintetico .synthetic-account{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-weight:600!important}
+#visaoSintetica #sintetico .budget-sort{font-weight:inherit;white-space:normal;width:100%}
+body[data-page="areas"] #visaoSintetica #sintetico .synthetic-detail>td{position:static;left:auto;z-index:auto;padding:0 12px 12px;background:var(--card);width:auto;border:0}
+#visaoSintetica #sintetico .synthetic-detail .synthetic-account-row>td{height:42px}
+#visaoSintetica #sintetico .situacao{font-size:11px;font-weight:400}
+@media(max-width:767px){
+ body[data-page="areas"] #visaoSintetica{padding:12px}
+ #visaoSintetica>header h2{margin:0 0 8px;padding:0 40px}
+ #visaoSintetica>header .budget-panel-actions{position:static;justify-content:flex-end;margin:8px 0}
+ body[data-page="areas"] #visaoSintetica>header p{padding-right:0}
+ #visaoSintetica #sintetico{height:65dvh;min-height:360px}
+ #visaoSintetica #sintetico .budget-table{min-width:920px;font-size:11px}
+}
