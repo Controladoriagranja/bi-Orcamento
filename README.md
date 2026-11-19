@@ -14,3 +14,9 @@ Nenhum arquivo operacional ou credencial faz parte deste repositório. O robô, 
 <iframe title="BI - Orçamento" src="https://controladoriagranja.github.io/bi-Orcamento/" width="100%" height="950" style="border:0" allowfullscreen></iframe>
 ```
 Cadastrar o relatório na CENTRAL e conceder os acessos aos usuários.
+
+
+## Visualizar Sintético
+O botão abre o plano auxiliar oficial 853, com as contas de grau 1 e Cta. Superior igual a zero. Contas iniciais marcadas com Total = 1 são excluídas. Cada clique abre as contas vinculadas imediatamente abaixo, mantendo o cabeçalho fixo durante a rolagem e a identificação da conta fixa na rolagem horizontal.
+A hierarquia é atualizada com o relatório de Planos Auxiliares na rotina diária do Orçamento. Contas novas são incorporadas pelo cadastro oficial, sem códigos fixos no navegador. Filtros e permissões também se aplicam à visão Sintética. Subtotais oficiais são preservados; quando um nível não consta nos valores do relatório, ele é calculado pelas contas filhas, sem somar novamente os descendentes.
+O Acompanhamento por Área continua disponível no mesmo formato.
